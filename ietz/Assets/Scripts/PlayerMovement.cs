@@ -10,11 +10,20 @@ public class PlayerMovement : MonoBehaviour
     public float jumppower = 3f;
     public Rigidbody rb;
     private bool isGrounded = false;
-
+    Rigidbody rigidbody;
+    
+        void OnCollisionEnter(Collision collision)
+        {
+        if (collision.gameObject.CompareTag("Ground"))
+        {
+        isSpacePressed = true;
+        Debug.Log("terrain collide");
+        }
+        }
     // Start is called before the first frame update
     void Start()
     {
-        
+        rigidbody = GetComponent<Rigidbody>();
     }
 
     // Update is called once per frame
@@ -32,34 +41,19 @@ public class PlayerMovement : MonoBehaviour
             transform.Translate(Vector3.forward * -movespeed * Time.deltaTime);
         }
 
-         void OnCollision(Collision collision)
+
+
+    if (isGrounded = true);
         {
-            if (collision.gameObject.CompareTag("Ground"))
-            {
-                isGrounded = true;
-            }
-        }
-
-         
-
-
-
-
 
         if (Input.GetKeyDown("space"))
         {
             isSpacePressed = true;
             Debug.Log("space pressed");
+            rigidbody.AddForce(transform.up * jumppower);
         }
-        else
-        {
-            isSpacePressed = false;
         }
-        if (isSpacePressed && isGrounded)
-        {
-            transform.Translate(Vector3.up * jumppower * Time.deltaTime);
-            Debug.Log("jump");
-        }
+
 
     }
 }
