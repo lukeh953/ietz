@@ -5,8 +5,11 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
 
-    public float movespeed = 10f;
+    private bool isSpacePressed = false;
+    public float movespeed = 4f;
+    public float jumppower = 3f;
     public Rigidbody rb;
+    private bool isGrounded = false;
 
     // Start is called before the first frame update
     void Start()
@@ -17,24 +20,46 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown("w"))
+        if (Input.GetKey(KeyCode.W))
         {
             Debug.Log("Forward");
-            rb.AddForce(0, 0, movespeed, ForceMode.Impulse);
+            transform.Translate(Vector3.forward * movespeed * Time.deltaTime);
         }
         
-        if (Input.GetKeyDown("s"))
+        if (Input.GetKey(KeyCode.S))
         {
             Debug.Log("backward");
-            rb.AddForce(0, 0, -movespeed, ForceMode.Impulse);
+            transform.Translate(Vector3.forward * -movespeed * Time.deltaTime);
         }
-        if (Input.GetKeyDown("w"))
+
+         void OnCollision(Collision collision)
         {
-            Debug.Log("Forward");
-            rb.AddForce(0, 0, movespeed, ForceMode.Impulse);
+            if (collision.gameObject.CompareTag("Ground"))
+            {
+                isGrounded = true;
+            }
         }
 
+         
 
+
+
+
+
+        if (Input.GetKeyDown("space"))
+        {
+            isSpacePressed = true;
+            Debug.Log("space pressed");
+        }
+        else
+        {
+            isSpacePressed = false;
+        }
+        if (isSpacePressed && isGrounded)
+        {
+            transform.Translate(Vector3.up * jumppower * Time.deltaTime);
+            Debug.Log("jump");
+        }
 
     }
 }
